@@ -13,3 +13,51 @@ to nest-cli.json
 npm i -D @swc/cli @swc/core
 
 npm run start:dev
+
+-------------------------------------
+//Setup NestJS Prisma & postgresql
+nest add nestjs-prisma --add-prisma-service
+chose: postgresql
+yes, Dockerize my application
+
+//Go to .env file (rename this later)
+POSTGRES_DB = bookstoredb
+//Updated DATABASE_URL and replaced @nest-postgres:5432 with @localhost:5432
+
+
+################################################ DIDNT REMOVE ######
+//Remove these from docker-compose.yml
+  nest-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-api
+    restart: always
+    ports:
+      - '3000:3000'
+    depends_on:
+      - nest-postgres
+    env_file:
+      - .env
+
+//DIDNT updated nest-postgres to nest-postgres-posts, remained as nest-postgres
+################################################
+
+//1. make sure docker desktop is running first. 
+//2. (optional) before you run docker-compose, delete data from 
+     "Containers", "Images", "Volumes", "Builds"
+//3. To make sure database running:
+docker-compose up
+-------------------------------------
+
+//IF ERROR ENCOUNTERED WITH "docker-compose up", run these command on *windows* termianl.
+netstat -aon | findstr :5432
+//Stop-Process -Id <ID NAME>
+example:
+Stop-Process -Id 17224
+Stop-Process -Id 2380
+
+
+
+Now, update schema in prisma/schema.prisma
+add the model
