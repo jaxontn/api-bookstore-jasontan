@@ -26,7 +26,6 @@ model User {
 
 model Book {
   id            Int         @id @default(autoincrement())
-  bookDetailId  Int         @unique
   title         String
   author        String
   publishedDate DateTime
@@ -35,7 +34,7 @@ model Book {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   orderItems    OrderItem[] @relation("BookOrderItems")
-  bookDetail    BookDetail  @relation("BookDetail", fields: [bookDetailId], references: [id])
+  bookDetail    BookDetail? @relation("BookToBookDetail")
 }
 
 model BookDetail {
@@ -48,7 +47,7 @@ model BookDetail {
   publisher String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  book      Book?    @relation("BookDetail")
+  book      Book     @relation("BookToBookDetail", fields: [bookId], references: [id])
 }
 
 model Order {

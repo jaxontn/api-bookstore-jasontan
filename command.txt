@@ -116,10 +116,14 @@ yes, for create entry points
 
 //NOT Updating src/modules/posts/posts.controller.ts because id using serial by default, no need change to string
 //Updated src/modules/posts/posts.service.ts
-  1. Added constructor "constructor(private readonly prisma: PrismaService) {}"
-  2. Update all the returns to return this.prima...
-//Updated src/modules/posts/posts.module.ts to include: 
-  "imports: [PrismaModule],"
+  1. Added constructor 
+      "constructor(private readonly prisma: PrismaService) {}"
+  
+  2. Update all the returns to return 
+      this.prima...
+  
+  3. Updated src/modules/posts/posts.module.ts to include: 
+      "imports: [PrismaModule],"
 ------------------------------------------------------------
 
 
