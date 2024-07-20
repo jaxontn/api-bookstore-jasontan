@@ -1,3 +1,20 @@
+#########TO RUN FROM ANOTHER LAPTOP###########
+
+//To Run the Database
+docker-compose up --build
+
+//To run the NestJS Web App
+npm install  
+npm run start:dev
+
+//To view database data
+npx prisma studio
+##############################################
+
+
+
+######INITIAL SETUP SECTION##################
+
 
 --------------------------------------
 added 'prettier/prettier' : 0
@@ -87,7 +104,7 @@ yes, for create entry points
 -------------------------------------
 
 
--------------------------------------
+--DO FOR EACH MODEL TABLE-----------------------------------
 //Update src/user/dto/create-user.dto.ts
 
 //NOT Updating src/modules/posts/posts.controller.ts because id using serial by default, no need change to string
@@ -96,7 +113,7 @@ yes, for create entry points
   2. Update all the returns to return this.prima...
 //Updated src/modules/posts/posts.module.ts to include: 
   "imports: [PrismaModule],"
---------------------------------------------------------
+------------------------------------------------------------
 
 
 
@@ -115,3 +132,9 @@ RESTORE POSTGRESQL FROM BACKUP.SQL
 //docker exec -i nest-postgres psql -U ${POSTGRES_USER} ${POSTGRES_DB} < backup.sql
 docker exec -i nest-postgres-posts psql -U prisma postdb < backup.sql
 //commented CREATE TABLE
+
+
+
+----SOP AFTER UPDATING SCHEMA--------
+1. Create a Migration: npx prisma migrate dev --name init
+2. Generate Prisma Client: npx prisma generate
