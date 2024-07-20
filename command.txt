@@ -68,5 +68,10 @@ add the model
 npx prisma migrate dev 
 
 //Enter a name for the new migration:
-create a post table
+"create tables"
+
+//It created a migration.sql where it looks like normal MySQL
+//inspect it to confirm the correctness of it.
 ------------------------------------------------
+
+
