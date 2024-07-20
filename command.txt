@@ -91,11 +91,10 @@ yes, for create entry points
 -------------------------------------
 //Update src/user/dto/create-user.dto.ts
 
-
-
---------------------------------------------------------
-CREATE SERVICE
-//Update src/modules/posts/posts.controller.ts
-//Update src/modules/posts/posts.service.ts
-//Update src/modules/posts/posts.module.ts to include imports: [PrismaModule],
+//NOT Updating src/modules/posts/posts.controller.ts because id using serial by default, no need change to string
+//Updated src/modules/posts/posts.service.ts
+  1. Added constructor "constructor(private readonly prisma: PrismaService) {}"
+  2. Update all the returns to return this.prima...
+//Updated src/modules/posts/posts.module.ts to include: 
+  "imports: [PrismaModule],"
 --------------------------------------------------------
