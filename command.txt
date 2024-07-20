@@ -1,0 +1,15 @@
+
+--------------------------------------
+added 'prettier/prettier' : 0
+to .eslintrc.js under "rules" field
+--------------------------------------
+
+
+--------------------------------------
+added "builder": "swc"
+to nest-cli.json
+--------------------------------------
+
+npm i -D @swc/cli @swc/core
+
+npm run start:dev
