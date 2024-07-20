@@ -75,3 +75,27 @@ npx prisma migrate dev
 ------------------------------------------------
 
 
+-------------------------------------
+//Creating the resources for tables
+nest generate resource user
+nest generate resource books
+nest generate resource book-details
+nest generate resource orders
+nest generate resource order-items
+
+chose: REST API
+yes, for create entry points
+-------------------------------------
+
+
+-------------------------------------
+//Update src/user/dto/create-user.dto.ts
+
+
+
+--------------------------------------------------------
+CREATE SERVICE
+//Update src/modules/posts/posts.controller.ts
+//Update src/modules/posts/posts.service.ts
+//Update src/modules/posts/posts.module.ts to include imports: [PrismaModule],
+--------------------------------------------------------
