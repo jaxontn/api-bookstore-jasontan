@@ -25,7 +25,6 @@ POSTGRES_DB = bookstoredb
 //Updated DATABASE_URL and replaced @nest-postgres:5432 with @localhost:5432
 
 
-################################################ DIDNT REMOVE ######
 //Remove these from docker-compose.yml
   nest-api:
     build:
@@ -98,3 +97,21 @@ yes, for create entry points
 //Updated src/modules/posts/posts.module.ts to include: 
   "imports: [PrismaModule],"
 --------------------------------------------------------
+
+
+
+
+
+
+
+----------------
+BACKUP POSTGRESQL TO BACKUP.SQL
+//docker exec -t nest-postgres pg_dump -U ${POSTGRES_USER} ${POSTGRES_DB} > backup.sql
+docker exec -t nest-postgres-posts pg_dump -U prisma postdb > backup.sql
+----------------
+
+----------------
+RESTORE POSTGRESQL FROM BACKUP.SQL
+//docker exec -i nest-postgres psql -U ${POSTGRES_USER} ${POSTGRES_DB} < backup.sql
+docker exec -i nest-postgres-posts psql -U prisma postdb < backup.sql
+//commented CREATE TABLE
