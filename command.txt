@@ -1,14 +1,21 @@
 #########TO RUN FROM ANOTHER LAPTOP###########
+1. Install Dependencies
+    npm install  
 
-//To Run the Database
-docker-compose up --build
+2. Create a Migration: 
+    npx prisma migrate dev --name init
 
-//To run the NestJS Web App
-npm install  
-npm run start:dev
+3. Generate Prisma Client: 
+    npx prisma generate
 
-//To view database data
-npx prisma studio
+4. Run the Database:
+    docker-compose up --build
+
+5. Run the NestJS Web App
+    npm run start:dev
+
+6. View database data
+    npx prisma studio
 ##############################################
 
 
