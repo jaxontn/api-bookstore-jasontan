@@ -12,3 +12,63 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]  @relation("UserOrders")
+}
+
+model Book {
+  id            Int         @id @default(autoincrement())
+  bookDetailId  Int         @unique
+  title         String
+  author        String
+  publishedDate DateTime
+  isbn          String      @unique
+  price         Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderItems    OrderItem[] @relation("BookOrderItems")
+  bookDetail    BookDetail  @relation("BookDetail", fields: [bookDetailId], references: [id])
+}
+
+model BookDetail {
+  id        Int      @id @default(autoincrement())
+  bookId    Int      @unique
+  summary   String
+  pageCount Int
+  genre     String
+  language  String
+  publisher String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  book      Book?    @relation("BookDetail")
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  userId     Int
+  status     String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User        @relation("UserOrders", fields: [userId], references: [id])
+  orderItems OrderItem[] @relation("OrderItems")
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  orderId    Int
+  bookId     Int
+  quantity   Int
+  totalPrice Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  order      Order    @relation("OrderItems", fields: [orderId], references: [id])
+  book       Book     @relation("BookOrderItems", fields: [bookId], references: [id])
+}

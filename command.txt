@@ -58,6 +58,15 @@ Stop-Process -Id 17224
 Stop-Process -Id 2380
 
 
-
+------------------------------------------------
 Now, update schema in prisma/schema.prisma
 add the model
+------------------------------------------------
+
+------------------------------------------------
+//Now, manage the schema.prisma and its models
+npx prisma migrate dev 
+
+//Enter a name for the new migration:
+create a post table
+------------------------------------------------

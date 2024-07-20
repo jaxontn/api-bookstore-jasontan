@@ -1,0 +1,35 @@
+Table Existence and Constraints
+
+    User: 
+    Can exist independently. 
+    It is not dependent on any other table. 
+    An Order can exist without a corresponding User 
+    (which would be unusual and likely a constraint 
+    in real scenarios, but possible in schema terms).
+
+
+    Book: 
+    Can exist independently but must have a 
+    unique bookDetailId pointing to BookDetail. A Book
+    must have an associated BookDetail, but BookDetail 
+    can be optional (Book?).
+
+
+    BookDetail: 
+    Can exist with or without an associated 
+    Book because book is optional. However, BookDetail 
+    must have a unique bookId that refers to a Book.
+
+
+    Order: 
+    Can exist independently, but in practice, 
+    it will always have a User due to the foreign key 
+    constraint. An Order without a User would violate 
+    the foreign key constraint.    
+
+
+    OrderItem: 
+    Can exist independently in terms of the 
+    schema, but in practice, it requires both an Order 
+    and a Book to exist because of the foreign key 
+    constraints.
