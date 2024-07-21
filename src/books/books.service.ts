@@ -19,12 +19,19 @@ export class BooksService {
 
   findAll() {
     //return `This action returns all books`;
-    return this.prisma.book.findMany();
+    return this.prisma.book.findMany({
+      include: {
+        bookDetail: true, // Include the related book detail
+      },
+    });
   }
 
   findOne(id: number) {
     //return `This action returns a #${id} book`;
-    return this.prisma.book.findFirst({ where: { id } });
+    return this.prisma.book.findFirst({ where: { id }, 
+      include: {
+      bookDetail: true, // Include the related book detail
+    }, });
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {
