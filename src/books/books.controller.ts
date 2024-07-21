@@ -53,7 +53,7 @@ export class BooksController {
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'UserID is not an admin, Only admin is allowed',
+          error: 'userID is not an admin, Only admin is allowed',
         },
         HttpStatus.BAD_REQUEST,
       );

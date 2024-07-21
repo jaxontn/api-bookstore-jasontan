@@ -5,8 +5,9 @@ import { PrismaModule } from 'nestjs-prisma';
 import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [PrismaModule, UserModule], // Import PrismaModule and UserModule
+  imports: [PrismaModule, UserModule], // Import UserModule
   controllers: [BooksController],
   providers: [BooksService],
+  exports: [BooksService], // Export BookService so it can be used in other modules
 })
 export class BooksModule {}
