@@ -31,4 +31,10 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+
+  @Get('/isAdmin/:id')
+  async isAdmin(@Param('id') id: string) {
+    const userId = parseInt(id, 10);
+    return this.userService.isAdmin(userId);
+  }
 }

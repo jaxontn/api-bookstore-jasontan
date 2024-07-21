@@ -33,4 +33,12 @@ export class UserService {
     //return `This action removes a #${id} user`;
     return this.prisma.user.delete({ where: { id }});
   }
+
+  async isAdmin(userId: number): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    return user?.isAdmin ?? false;
+  }
+  
 }
