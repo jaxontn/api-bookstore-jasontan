@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { PrismaService } from 'nestjs-prisma';
@@ -47,6 +47,21 @@ export class BooksService {
 
   async createBookWithDetails(createBookWithDetailsDto: CreateBookWithDetailsDto) {
     const { title, author, publishedDate, isbn, price, summary, pageCount, genre, language, publisher } = createBookWithDetailsDto;
+
+    // Check if the ISBN already exists
+    const existingBook = await this.prisma.book.findUnique({
+      where: { isbn },
+    });
+
+    if (existingBook) {
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'A book with this ISBN already exists',
+        },
+        HttpStatus.CONFLICT,
+      );
+    }
 
     // Create the book
     const book = await this.prisma.book.create({

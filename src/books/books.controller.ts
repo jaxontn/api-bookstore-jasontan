@@ -47,19 +47,25 @@ export class BooksController {
     const { userId, createBookWithDetailsDto } = body;
 
     // Check if the user is an admin
-    const isAdmin = await this.userService.isAdmin(userId);
-    
-    if (!isAdmin) {
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'userID is not an admin, Only admin is allowed',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    await this.ensureAdmin(userId);
 
     // Proceed with creating the book and book details
     return this.booksService.createBookWithDetails(createBookWithDetailsDto);
   }
+
+
+
+  async ensureAdmin(userId: number) {
+    const user = await this.userService.findOne(userId);
+    if (!user || !user.isAdmin) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'User is not an admin, only admins are allowed',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+  }
+
 }
