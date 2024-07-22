@@ -1,0 +1,83 @@
+BOOKS:
+
+    [admin, user] ✔️
+    1. View list of books
+        [GET] localhost:3000/books                
+    
+
+    [admin, user] ✔️
+    2. Search a book and return its details 
+        [GET] localhost:3000/books/:bookId
+
+
+    [admin] -> [requirs userId] ✔️
+    3. Create a new book entry 
+        [POST] localhost:3000/books
+
+    
+    [admin] -> [requires userId]
+    4. Edit an existing book entry  ✔️
+        [PATCH] localhost:3000/books/:bookId
+
+            {
+                "userId": 2,
+                "updateBookDto": {
+                    "price": 39.99,
+                    "author": "Cal Newport"
+                }
+            }
+
+
+        [PATCH] localhost:3000/book-details/:bookDetailId
+
+            {
+                "userId": 2,
+                "updateBookDetailDto": {
+                    "publisher": "Khan Academy"
+                }
+            }   
+
+        [PATCH] localhost:3000/book-details 
+
+            {
+                "userId": 2,
+                "bookId": 3,
+                "updateBookDetailDto": {
+                    "summary": "This is a summary",
+                    "publisher": "Code Academy"
+                }
+            }
+
+
+
+    [admin] -> [requires userId]
+    5. delete book entry
+        localhost:3000/books/:bookId            [DELETE]
+        localhost:3000/book-details/:bookId     [DELETE]
+
+
+
+ORDERS:
+
+    [admin, user]
+    1. Create a new order 
+
+
+
+    [admin] -> [requires userId]
+    2. Edit an order
+
+
+
+    [admin] -> [requires userId]
+    3. Delete an order 
+
+
+
+    [user] -> [requires userId]
+    4. list user's own orders (with pagination)
+
+
+
+    [user] -> [requires userId]
+    5. view their own order details and list of items

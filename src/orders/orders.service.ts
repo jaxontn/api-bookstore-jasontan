@@ -37,12 +37,20 @@ export class OrdersService {
 
   findAll() {
     //return `This action returns all orders`;
-    return this.prisma.order.findMany();
+    return this.prisma.order.findMany({
+      include: {
+        orderItems: true, //Include the related order items
+      }
+    });
   }
 
-  findOne(id: number) {
-    //return `This action returns a #${id} order`;
-    return this.prisma.order.findFirst({ where: { id } });
+  async findOne(id: number) {
+    return this.prisma.order.findFirst({
+      where: { id },
+      include: {
+        orderItems: true, // Include the related book for each order item
+      },
+    });
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {

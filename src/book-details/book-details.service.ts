@@ -29,6 +29,16 @@ export class BookDetailsService {
     return this.prisma.bookDetail.update({ where: { id }, data: updateBookDetailDto});
   }
 
+  updateByBookId(bookId: number, updateBookDetailDto: UpdateBookDetailDto) {
+
+    // Update bookDetail where bookId matches
+    return this.prisma.bookDetail.update({
+      where: { bookId },
+      data: updateBookDetailDto,
+    });
+
+  }
+
   remove(id: number) {
     //return `This action removes a #${id} bookDetail`;
     return this.prisma.bookDetail.delete({ where: { id } });
