@@ -16,61 +16,128 @@ export class BooksController {
   ) {}
 
 
+
+
+
+  
   @Get()
-  findAll() {
-    return this.booksService.findAll();
+  async findAll() {
+
+    try {
+      return await this.booksService.findAll();
+    } catch (error) {
+      throw new HttpException('Failed to retrieve books', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
+
+
+
+
 
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+
+    try {
+      const book = await this.booksService.findOne(+id);
+      if (!book) {
+        throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
+      }
+      return book;
+    } catch (error) {
+      throw new HttpException('Failed to retrieve book', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
+
+
+
+
+
 
   @Patch(':id') //bookId
   async update(@Param('id') id: string, @Body() body: { userId: number; updateBookDto: UpdateBookDto}) {
 
     const { userId, updateBookDto } = body;
 
-    await this.ensureAdmin(userId); // Check if the user is an admin
-    
-    return this.booksService.update(+id, updateBookDto);
+    try {
+      await this.ensureAdmin(userId);
+      const updatedBook = await this.booksService.update(+id, updateBookDto);
+      if (!updatedBook) {
+        throw new HttpException('Failed to update book', HttpStatus.NOT_FOUND);
+      }
+      return updatedBook;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Failed to update book', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
+
+
+
+
 
 
   @Delete(':id') //bookId
   async remove(@Param('id') id: string, @Body('adminId') adminId: number) {
 
-    await this.ensureAdmin(adminId); // Check if the user is an admin
+    try {
+      await this.ensureAdmin(adminId);
+      const deletedBook = await this.booksService.remove(+id);
+      if (!deletedBook) {
+        throw new HttpException('Failed to delete book', HttpStatus.NOT_FOUND);
+      }
+      return deletedBook;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Failed to delete book', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-    return this.booksService.remove(+id);
   }
+
+
+
 
 
 
   @Post()
   async createBookWithDetails(@Body() body: { userId: number; createBookWithDetailsDto: CreateBookWithDetailsDto }) {
+
     const { userId, createBookWithDetailsDto } = body;
 
-    await this.ensureAdmin(userId); // Check if the user is an admin
-
-    // Proceed with creating the book and book details
-    return this.booksService.createBookWithDetails(createBookWithDetailsDto);
-  }
-
-
-
-  async ensureAdmin(userId: number) {
-    const user = await this.userService.findOne(userId);
-    if (!user || !user.isAdmin) {
-      throw new HttpException(
-        {
-          status: HttpStatus.FORBIDDEN,
-          error: 'User is not an admin, only admins are allowed',
-        },
-        HttpStatus.FORBIDDEN,
-      );
+    try {
+      await this.ensureAdmin(userId);
+      // Proceed with creating the book and book details
+      const newBook = await this.booksService.createBookWithDetails(createBookWithDetailsDto);
+      return newBook;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException('Failed to create book with details', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+
+
+
+
+
+  private async ensureAdmin(userId: number) {
+    
+      const user = await this.userService.findOne(userId);
+      if (!user || !user.isAdmin) {
+        throw new HttpException('User is not an admin, only admins are allowed', HttpStatus.FORBIDDEN);
+      }
+  }
+
+
+
 
 }

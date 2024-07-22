@@ -2,14 +2,15 @@
 1. Install Dependencies
     npm install  
 
-2. Create a Migration: 
+2. Run the Database:
+    docker-compose up --build
+
+3. Create a Migration: 
     npx prisma migrate dev --name init
 
-3. Generate Prisma Client: 
+4. Generate Prisma Client: 
     npx prisma generate
 
-4. Run the Database:
-    docker-compose up --build
 
 5. Run the NestJS Web App
     npm run start:dev

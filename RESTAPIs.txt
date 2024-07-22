@@ -34,6 +34,9 @@ BOOKS:
     
     [admin] -> [requires userId]
     4. Edit an existing book entry
+
+
+        //TO UPDATE BOOK BASED ON BOOK ID 
         ✔️ [PATCH] localhost:3000/books/:bookId
 
             {
@@ -45,6 +48,8 @@ BOOKS:
             }
 
 
+
+        //TO UPDATE BOOK DETAIL BASED ON BOOK DETAIL ID
         ✔️ [PATCH] localhost:3000/book-details/:bookDetailId
 
             {
@@ -54,6 +59,9 @@ BOOKS:
                 }
             }   
 
+
+
+        //TO UPDATE BOOK DETAIL BASED ON BOOK ID
         ✔️ [PATCH] localhost:3000/book-details 
 
             {
@@ -163,4 +171,28 @@ ORDERS:
     5. view their own order details and list of items
 
         //THIS WILL ALLOW USER TO CHECK THEIR LIST OF ORDERS AND ITEMS
-        ✔️ [GET] localhost:3000/order/:userId
+        ✔️ [GET] localhost:3000/orders/:userId
+
+
+-------------------------------------------------------------------
+USERS:
+
+    1. Create a new user
+        
+        ✔️ [POST] localhost:3000/user
+
+            {
+                "name": "James Bond",
+                "email": "daniellim@gmail.com",
+                "password": "111",
+                "isAdmin": true
+
+            }
+
+    2. Edit a user 
+        
+        ✔️ [PATCH] localhost:3000/user/:id
+
+        {
+            "isAdmin": false
+        }
