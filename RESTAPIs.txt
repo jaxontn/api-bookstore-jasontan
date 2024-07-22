@@ -154,7 +154,9 @@ ORDERS:
     [user] -> [requires userId]
     4. list user's own orders (with pagination)
 
-        
+        //YOU CAN SET WHICH PAGE AND LIMIT NUMBER OF ORDERS PER PAGE
+        ✔️ [GET] localhost:3000/orders/paginate/:userId?page=1&limit=2
+
 
 
     [user] -> [requires userId]

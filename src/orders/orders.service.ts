@@ -55,6 +55,23 @@ export class OrdersService {
     });
   }
 
+
+  async findOrdersByUserWithPagination(
+    userId: number,
+    page: number = 1,
+    limit: number = 2
+  ) {
+    const skip = (page - 1) * limit;
+    return this.prisma.order.findMany({
+      where: { userId },
+      include: {
+        orderItems: true, // Include related orderItems
+      },
+      skip, // Skip the number of records
+      take: limit, // Limit the number of records
+    });
+  }
+
   update(id: number, updateOrderDto: UpdateOrderDto) {
     //return `This action updates a #${id} order`;
     return this.prisma.order.update({ where: { id }, data: updateOrderDto });

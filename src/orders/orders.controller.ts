@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 //import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -19,6 +19,41 @@ export class OrdersController {
   @Get(':id')
   findOrderByUser(@Param('id') id: string) {
     return this.ordersService.findOrderByUser(+id);
+  }
+
+  
+  // Endpoint to fetch orders with pagination
+  @Get('/paginate/:id')
+  async findOrderByUserPagination(
+    @Param('id') id: string,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '5'
+  ) {
+    const userId = +id;
+    const pageNumber = parseInt(page, 10);
+    const limitNumber = parseInt(limit, 10);
+
+    if (isNaN(pageNumber) || pageNumber < 1) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Invalid page number',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (isNaN(limitNumber) || limitNumber < 1) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Invalid limit number',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return this.ordersService.findOrdersByUserWithPagination(userId, pageNumber, limitNumber);
   }
 
   @Patch(':id')
