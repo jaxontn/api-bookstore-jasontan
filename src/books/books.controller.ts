@@ -15,16 +15,12 @@ export class BooksController {
     private readonly userService: UserService
   ) {}
 
-  /*@Post()
-  create(@Body() createBookDto: CreateBookDto) {
-
-    return this.booksService.create(createBookDto);
-  }*/
 
   @Get()
   findAll() {
     return this.booksService.findAll();
   }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -32,7 +28,6 @@ export class BooksController {
   }
 
   @Patch(':id') //bookId
-  //async update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
   async update(@Param('id') id: string, @Body() body: { userId: number; updateBookDto: UpdateBookDto}) {
 
     const { userId, updateBookDto } = body;
@@ -44,17 +39,15 @@ export class BooksController {
 
 
   @Delete(':id') //bookId
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Body('adminId') adminId: number) {
 
-    //const idInt = parseInt(id);
-    //await this.ensureAdmin(idInt); // Check if the user is an admin
+    await this.ensureAdmin(adminId); // Check if the user is an admin
 
     return this.booksService.remove(+id);
   }
 
 
 
-  //@Post('create-with-details')
   @Post()
   async createBookWithDetails(@Body() body: { userId: number; createBookWithDetailsDto: CreateBookWithDetailsDto }) {
     const { userId, createBookWithDetailsDto } = body;

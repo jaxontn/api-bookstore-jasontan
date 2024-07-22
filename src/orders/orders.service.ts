@@ -44,9 +44,11 @@ export class OrdersService {
     });
   }
 
-  async findOne(id: number) {
-    return this.prisma.order.findFirst({
-      where: { id },
+  async findOrderByUser(id: number) {
+
+    const userId = id;
+    return this.prisma.order.findMany({
+      where: { userId },
       include: {
         orderItems: true, // Include the related book for each order item
       },
@@ -58,7 +60,15 @@ export class OrdersService {
     return this.prisma.order.update({ where: { id }, data: updateOrderDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+
+    const orderId = id;
+
+    //Delete the orderItem record first
+    await this.prisma.orderItem.deleteMany({
+      where: {orderId}
+    });
+
     //return `This action removes a #${id} order`;
     return this.prisma.order.delete({ where: { id } });
   }

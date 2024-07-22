@@ -1,34 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Body, Patch, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { OrderItemsService } from './order-items.service';
-import { CreateOrderItemDto } from './dto/create-order-item.dto';
+//import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
+
+import { UserService } from '../user/user.service';
 
 @Controller('order-items')
 export class OrderItemsController {
-  constructor(private readonly orderItemsService: OrderItemsService) {}
+  constructor(
+    private readonly orderItemsService: OrderItemsService,
+    private readonly userService: UserService,
+  ) {}
 
-  @Post()
-  create(@Body() createOrderItemDto: CreateOrderItemDto) {
-    return this.orderItemsService.create(createOrderItemDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.orderItemsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderItemsService.findOne(+id);
-  }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderItemDto: UpdateOrderItemDto) {
+  async update(@Param('id') id: string, @Body() body: { adminId: number; updateOrderItemDto: UpdateOrderItemDto }) {
+
+    const { adminId, updateOrderItemDto } = body;
+
+    await this.ensureAdmin(adminId); // Check if this user is an admin
+
     return this.orderItemsService.update(+id, updateOrderItemDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderItemsService.remove(+id);
+
+
+  async ensureAdmin(userId: number) {
+    const user = await this.userService.findOne(userId);
+    if (!user || !user.isAdmin) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'User is not an admin, only admins are allowed',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
   }
 }

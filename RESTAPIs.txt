@@ -1,23 +1,40 @@
 BOOKS:
 
-    [admin, user] ✔️
+    [admin, user] 
     1. View list of books
-        [GET] localhost:3000/books                
+        ✔️ [GET] localhost:3000/books                
     
 
-    [admin, user] ✔️
+    [admin, user] 
     2. Search a book and return its details 
-        [GET] localhost:3000/books/:bookId
+        ✔️ [GET] localhost:3000/books/:bookId
 
 
-    [admin] -> [requirs userId] ✔️
+    [admin] -> [requirs userId] 
     3. Create a new book entry 
-        [POST] localhost:3000/books
+        ✔️ [POST] localhost:3000/books
+
+            {
+                "userId": 3,
+                "createBookWithDetailsDto": {
+                    "title": "Atomic Habits",
+                    "author": "James Clear",
+                    "publishedDate": "2023-07-20T00:00:00.000Z",
+                    "isbn": "111-5627890123",
+                    "price": 49.99,
+                    "summary": "This is a Productivity book.",
+                    "pageCount": 350,
+                    "genre": "Non-Fiction",
+                    "language": "ENGLISH",
+                    "publisher": "Penguin Publisher"
+                }
+            }
+
 
     
     [admin] -> [requires userId]
-    4. Edit an existing book entry  ✔️
-        [PATCH] localhost:3000/books/:bookId
+    4. Edit an existing book entry
+        ✔️ [PATCH] localhost:3000/books/:bookId
 
             {
                 "userId": 2,
@@ -28,7 +45,7 @@ BOOKS:
             }
 
 
-        [PATCH] localhost:3000/book-details/:bookDetailId
+        ✔️ [PATCH] localhost:3000/book-details/:bookDetailId
 
             {
                 "userId": 2,
@@ -37,7 +54,7 @@ BOOKS:
                 }
             }   
 
-        [PATCH] localhost:3000/book-details 
+        ✔️ [PATCH] localhost:3000/book-details 
 
             {
                 "userId": 2,
@@ -52,32 +69,96 @@ BOOKS:
 
     [admin] -> [requires userId]
     5. delete book entry
-        localhost:3000/books/:bookId            [DELETE]
-        localhost:3000/book-details/:bookId     [DELETE]
+
+        //THIS WILL DELETE THE BOOK DETAIL ALONG WITH THE BOOK
+        ✔️ [DELETE] localhost:3000/books/:bookId
+
+            {
+                adminId: 2
+            }
 
 
 
+---------------------------------------------------------------
 ORDERS:
 
     [admin, user]
     1. Create a new order 
+
+        //CAN BE USED TO CREATE AN ORDER WITH MULTIPLE ITEMS & QUANTITY
+        ✔️ [POST] localhost:3000/orders
+
+            {
+                "userId": 1,
+                "createOrderWithItemsDto": {
+                    "status": "Paid",
+                    "orderItems": [
+                    {
+                        "bookId": 7,
+                        "quantity": 2
+                    },
+                    {
+                        "bookId": 8,
+                        "quantity": 5
+                    },
+                    {
+                        "bookId": 3,
+                        "quantity": 1
+                    }
+                    ]
+                }
+            }
+
 
 
 
     [admin] -> [requires userId]
     2. Edit an order
 
+        //CAN BE USED TO UPDATE ORDER STATUS AND/OR PURCHASE USER ID
+        ✔️ [PATCH] localhost:3000/orders/:orderId/
+
+            {
+                "adminId": 3,
+                "updateOrderDto": {
+                    "userId":  2,
+                    "status": "processing..."   
+                }
+            }
+
+
+
+        //CAN BE USED TO SHIFT ORDER ITEMS FROM ONE ORDER TO ANOTHER
+        ✔️ [PATCH] localhost:3000/order-items/:orderItemId
+
+            {
+                "adminId": 2,
+                "updateOrderItemDto": {
+                    "orderId": 1
+                }
+            } 
 
 
     [admin] -> [requires userId]
     3. Delete an order 
+
+        //THIS WILL DELETE THE ORDER ITEMS ALONG WITH THE ORDER
+        ✔️ [DELETE] localhost:3000/orders/:orderId
+
+            {
+                adminId: 2
+            }
 
 
 
     [user] -> [requires userId]
     4. list user's own orders (with pagination)
 
+        
 
 
     [user] -> [requires userId]
     5. view their own order details and list of items
+
+        //THIS WILL ALLOW USER TO CHECK THEIR LIST OF ORDERS AND ITEMS
+        ✔️ [GET] localhost:3000/order/:userId

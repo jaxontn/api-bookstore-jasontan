@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { CreateOrderDto } from './dto/create-order.dto';
+//import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 import { UserService } from '../user/user.service';
@@ -15,50 +15,71 @@ export class OrdersController {
     private readonly booksService: BooksService,
   ) {}
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.ordersService.findAll();
-  }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
+  findOrderByUser(@Param('id') id: string) {
+    return this.ordersService.findOrderByUser(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
+  async update(@Param('id') id: string, @Body() body: { adminId: number; updateOrderDto: UpdateOrderDto }) {
+
+    const { adminId, updateOrderDto } = body;
+
+    await this.ensureAdmin(adminId); // Check if the user is an admin
+
     return this.ordersService.update(+id, updateOrderDto);
   }
 
+
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Body('adminId') adminId: number) {
+
+    await this.ensureAdmin(adminId);
     return this.ordersService.remove(+id);
   }
 
 
 
-  @Post('create-with-items')
+  @Post()
   async createOrderWithItems(@Body() body: { userId: number; createOrderWithItemsDto: CreateOrderWithItemsDto }) {
     const { userId, createOrderWithItemsDto } = body;
 
-    // Check if the user is valid
-    const user = await this.userService.findOne(userId);
-    if (!user) {
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'userID does not exist',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    await this.ensureUser(userId); // Check if the user is valid
 
     // Proceed with creating the order and order items
     return this.ordersService.createOrderWithItems(userId, createOrderWithItemsDto);
   }
+
+
+
+  async ensureUser(userId: number) {
+    const user = await this.userService.findOne(userId);
+    if (!user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'User not found',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+  }
+
+
+
+  async ensureAdmin(userId: number) {
+    const user = await this.userService.findOne(userId);
+    if (!user || !user.isAdmin) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'User is not an admin, only admins are allowed',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+  }
+
 }
