@@ -11,12 +11,14 @@
 4. Generate Prisma Client: 
     npx prisma generate
 
-
 5. Run the NestJS Web App
     npm run start:dev
 
 6. View database data
     npx prisma studio
+
+7. Run Seed Script
+    npm run seed
 ##############################################
 
 
@@ -64,7 +66,7 @@ POSTGRES_DB = bookstoredb
     env_file:
       - .env
 
-//DIDNT updated nest-postgres to nest-postgres-posts, remained as nest-postgres
+//DIDNT updated nest-postgres to nest-postgres-db, remained as nest-postgres
 ################################################
 
 //1. make sure docker desktop is running first. 
@@ -115,15 +117,15 @@ yes, for create entry points
 --DO FOR EACH MODEL TABLE-----------------------------------
 //Update src/user/dto/create-user.dto.ts
 
-//NOT Updating src/modules/posts/posts.controller.ts because id using serial by default, no need change to string
-//Updated src/modules/posts/posts.service.ts
+//NOT Updating src/user/user.controller.ts because id using serial by default, no need change to string
+//Updated src/user/user.service.ts
   1. Added constructor 
       "constructor(private readonly prisma: PrismaService) {}"
   
   2. Update all the returns to return 
       this.prima...
   
-  3. Updated src/modules/posts/posts.module.ts to include: 
+  3. Updated src/user/user.module.ts to include: 
       "imports: [PrismaModule],"
 ------------------------------------------------------------
 
@@ -136,13 +138,13 @@ yes, for create entry points
 ----------------
 BACKUP POSTGRESQL TO BACKUP.SQL
 //docker exec -t nest-postgres pg_dump -U ${POSTGRES_USER} ${POSTGRES_DB} > backup.sql
-docker exec -t nest-postgres-posts pg_dump -U prisma postdb > backup.sql
+docker exec -t nest-postgres pg_dump -U prisma bookstoredb > backup.sql
 ----------------
 
 ----------------
 RESTORE POSTGRESQL FROM BACKUP.SQL
 //docker exec -i nest-postgres psql -U ${POSTGRES_USER} ${POSTGRES_DB} < backup.sql
-docker exec -i nest-postgres-posts psql -U prisma postdb < backup.sql
+docker exec -i nest-postgres psql -U prisma bookstoredb < backup.sql
 //commented CREATE TABLE
 
 
