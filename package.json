@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "vercel-build": "echo \"Database URL: $DATABASE_URL\" && prisma generate && prisma migrate deploy && nest build",
+    "vercel-build": "prisma generate && prisma migrate deploy && npm run seed && nest build",
     "build": "nest build",
     "seed": "ts-node prisma/seed.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
