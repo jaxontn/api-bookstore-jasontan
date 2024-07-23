@@ -1,10 +1,14 @@
-#########TO RUN FROM ANOTHER LAPTOP###########
+#########INSTRUCTIONS TO RUN FROM ANOTHER LAPTOP###########
+
+---1st Terminal Window------------------------
 1. Install Dependencies
     npm install  
 
 2. Run the Database:
     docker-compose up --build
+----------------------------------------------
 
+---2nd Terminal Window------------------------
 3. Create a Migration: 
     npx prisma migrate dev --name init
 
@@ -13,15 +17,21 @@
 
 5. Run the NestJS Web App
     npm run start:dev
+----------------------------------------------
 
+---3rd Terminal Window------------------------
 6. View database data
     npx prisma studio
+----------------------------------------------
 
+---4th Terminal Window------------------------
 7. Run Seed Script
     npm run seed
+----------------------------------------------
 ##############################################
 
 
+--------CAN IGNORE THE SETUP BELOW-----------
 
 ######INITIAL SETUP SECTION##################
 

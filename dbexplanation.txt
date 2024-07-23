@@ -16,9 +16,7 @@ Table Existence and Constraints
 
 
     BookDetail: 
-    Can exist with or without an associated 
-    Book because book is optional. However, BookDetail 
-    must have a unique bookId that refers to a Book.
+    BookDetail must have a unique bookId that refers to a Book.
 
 
     Order: 
@@ -29,7 +27,5 @@ Table Existence and Constraints
 
 
     OrderItem: 
-    Can exist independently in terms of the 
-    schema, but in practice, it requires both an Order 
-    and a Book to exist because of the foreign key 
-    constraints.
+    It requires both an Order and a Book to exist because 
+    of the foreign key constraints.
