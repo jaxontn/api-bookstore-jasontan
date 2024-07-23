@@ -6,9 +6,5 @@
     "dist",
     "**/*spec.ts",
     "prisma"
-  ],
-  "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src"
-  }
+  ]
 }
